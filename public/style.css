@@ -1,0 +1,88 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1c1c1c;
+    color: white;
+}
+
+.pagina-login {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagina-login h1 {
+    font-size: 38px;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+.pagina-login h1 span {
+    color: #4caf50;
+}
+
+.login {
+    background-color: #292929;
+    width: 350px;
+    padding: 30px;
+    border: 1px solid #444;
+}
+
+.login h2 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.login p {
+    text-align: center;
+    color: #bbb;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+}
+
+input {
+    padding: 12px;
+    margin-bottom: 20px;
+    background-color: #1c1c1c;
+    border: 1px solid #555;
+    color: white;
+    outline: none;
+}
+
+input:focus {
+    border-color: #4caf50;
+}
+
+button {
+    background-color: #388e3c;
+    color: white;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #2e7d32;
+}
+
+@media (max-width: 400px) {
+    .login {
+        width: 90%;
+    }
+}

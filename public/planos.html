@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Fit - Planos</title>
+    <link rel="stylesheet" href="alunos.css">
+</head>
+<body>
+
+    <aside class="menu">
+        <h1>IRON <span>FIT</span></h1>
+
+        <nav>
+            <a href="alunos.html">Alunos</a>
+            <a href="planos.html" class="ativo">Planos</a>
+            <a href="#">Matrículas</a>
+            <a href="#">Pagamentos</a>
+        </nav>
+
+        <a href="index.html" class="sair">Sair</a>
+    </aside>
+
+    <main class="conteudo">
+
+        <div class="topo">
+            <h2>Planos</h2>
+
+            <details class="novo-aluno">
+                <summary>+ Novo plano</summary>
+
+                <form id="form-plano">
+                    <label for="nome-plano">Nome do plano</label>
+                    <input type="text" id="nome-plano" required>
+
+                    <label for="valor">Valor</label>
+                    <input type="number" id="valor" step="0.01" required>
+
+                    <label for="duracao">Duração (dias)</label>
+                    <input type="number" id="duracao" required>
+
+                    <label for="descricao">Descrição</label>
+                    <input type="text" id="descricao">
+
+                    <button type="submit">Salvar plano</button>
+                </form>
+            </details>
+        </div>
+
+        <div class="tabela">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plano</th>
+                        <th>Valor</th>
+                        <th>Duração</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tabela-planos">
+                    <tr>
+                        <td colspan="5">Nenhum plano cadastrado.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

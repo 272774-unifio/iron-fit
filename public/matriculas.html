@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Fit - Matrículas</title>
+    <link rel="stylesheet" href="alunos.css">
+</head>
+<body>
+
+    <aside class="menu">
+        <h1>IRON <span>FIT</span></h1>
+
+        <nav>
+            <a href="alunos.html">Alunos</a>
+            <a href="planos.html">Planos</a>
+            <a href="matriculas.html" class="ativo">Matrículas</a>
+            <a href="#">Pagamentos</a>
+        </nav>
+
+        <a href="index.html" class="sair">Sair</a>
+    </aside>
+
+    <main class="conteudo">
+
+        <div class="topo">
+            <h2>Matrículas</h2>
+
+            <div class="pesquisa">
+                <input type="text" id="pesquisar-matricula" placeholder="Pesquisar aluno...">
+            </div>
+        </div>
+
+        <div class="tabela">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aluno</th>
+                        <th>Plano</th>
+                        <th>Vencimento</th>
+                        <th>Situação</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tabela-matriculas">
+                    <tr>
+                        <td colspan="4">Carregando matrículas...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

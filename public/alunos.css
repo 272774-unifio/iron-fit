@@ -1,0 +1,241 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Menu */
+
+.menu {
+    position: fixed;
+    width: 210px;
+    height: 100vh;
+    background-color: #1c1c1c;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu h1 {
+    color: white;
+    font-size: 23px;
+    margin-bottom: 35px;
+}
+
+.menu h1 span {
+    color: #4caf50;
+}
+
+.menu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu nav a,
+.sair {
+    color: #ddd;
+    text-decoration: none;
+    padding: 11px;
+    font-size: 15px;
+}
+
+.menu nav a:hover {
+    background-color: #333;
+}
+
+.menu nav a.ativo {
+    background-color: #388e3c;
+    color: white;
+}
+
+.sair {
+    margin-top: auto;
+}
+
+/* Página */
+
+.conteudo {
+    margin-left: 210px;
+    padding: 30px;
+}
+
+.topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.topo h2 {
+    font-size: 25px;
+    font-weight: normal;
+}
+
+/* Cadastro */
+
+.novo-aluno summary {
+    background-color: #388e3c;
+    color: white;
+    padding: 11px 15px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.novo-aluno summary:hover {
+    background-color: #2e7d32;
+}
+
+.novo-aluno form {
+    background-color: white;
+    padding: 20px;
+    width: 280px;
+    border: 1px solid #ddd;
+    position: absolute;
+    right: 30px;
+    margin-top: 5px;
+    z-index: 1;
+}
+
+.novo-aluno label {
+    display: block;
+    margin: 12px 0 5px;
+    font-size: 14px;
+}
+
+.novo-aluno input {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #ccc;
+}
+
+.novo-aluno button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background-color: #388e3c;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Tabela */
+
+.tabela {
+    background-color: white;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 13px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+th {
+    font-weight: normal;
+    background-color: #eee;
+}
+
+/* Celular */
+
+@media (max-width: 700px) {
+    .menu {
+        width: 150px;
+    }
+
+    .conteudo {
+        margin-left: 150px;
+        padding: 15px;
+    }
+
+    .topo {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .novo-aluno form {
+        right: 15px;
+    }
+}
+/* Escolha de planos */
+.tela-planos {
+    margin-top: 20px;
+}
+
+.cabecalho-planos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.cabecalho-planos h2 {
+    margin-bottom: 5px;
+}
+
+.cabecalho-planos p {
+    color: #666;
+}
+
+.lista-planos {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cartao-plano {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    width: 250px;
+    box-sizing: border-box;
+}
+
+.cartao-plano h3 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.cartao-plano .valor-plano {
+    font-size: 26px;
+    font-weight: bold;
+    color: #319442;
+    margin: 15px 0;
+}
+
+.cartao-plano .duracao-plano {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.cartao-plano button {
+    background: #319442;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.cartao-plano button:hover {
+    background: #267534;
+}
+
+.cartao-plano:hover {
+    border-color: #319442;
+}
