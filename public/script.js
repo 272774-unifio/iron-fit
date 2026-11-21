@@ -1,5 +1,5 @@
 
- // Login
+// Login
 const formularioLogin = document.getElementById('form-login');
 
 if (formularioLogin) {
@@ -25,6 +25,25 @@ if (formularioLogin) {
     });
 }
 
+// Formatar CPF automaticamente
+const campoCPF = document.getElementById('cpf');
+
+if (campoCPF) {
+    campoCPF.addEventListener('input', function() {
+        let cpf = this.value.replace(/\D/g, '').slice(0, 11);
+
+        if (cpf.length > 9) {
+            cpf = cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+        } else if (cpf.length > 6) {
+            cpf = cpf.replace(/^(\d{3})(\d{3})(\d{1,3})$/, '$1.$2.$3');
+        } else if (cpf.length > 3) {
+            cpf = cpf.replace(/^(\d{3})(\d{1,3})$/, '$1.$2');
+        }
+
+        this.value = cpf;
+    });
+}
+
 // Cadastro de alunos
 const formularioAluno = document.getElementById('form-aluno');
 
@@ -34,6 +53,7 @@ if (formularioAluno) {
 
         const aluno = {
             nome: document.getElementById('nome').value,
+            cpf: document.getElementById('cpf').value,
             telefone: document.getElementById('telefone').value,
             email: document.getElementById('email').value,
             nascimento: document.getElementById('nascimento').value
@@ -52,7 +72,7 @@ if (formularioAluno) {
             carregarAlunos();
             mostrarPlanos(resultado.id_aluno, aluno.nome);
         } else {
-            alert('Erro ao cadastrar aluno.');
+            alert('Erro ao cadastrar aluno. Verifique se o CPF já está cadastrado.');
         }
     });
 }
@@ -69,7 +89,7 @@ async function carregarAlunos() {
     tabela.innerHTML = '';
 
     if (alunos.length === 0) {
-        tabela.innerHTML = '<tr><td colspan="6">Nenhum aluno cadastrado.</td></tr>';
+        tabela.innerHTML = '<tr><td colspan="7">Nenhum aluno cadastrado.</td></tr>';
         return;
     }
 
@@ -81,16 +101,17 @@ async function carregarAlunos() {
         tabela.innerHTML += `
             <tr>
                 <td>${aluno.nome}</td>
+                <td>${aluno.cpf || ''}</td>
                 <td>${aluno.telefone || ''}</td>
                 <td>${aluno.email || ''}</td>
                 <td>${data}</td>
                 <td>${aluno.plano || 'Sem plano'}</td>
                 <td>
-                    <button onclick="editarAluno(${aluno.id_aluno})">Editar aluno</button>
+                    <button class="btn-editar" onclick="editarAluno(${aluno.id_aluno})">Editar aluno</button>
                     ${aluno.id_matricula ? `
-                        <button onclick="editarPlano(${aluno.id_matricula}, ${aluno.id_plano})">Editar plano</button>
+                        <button class="btn-editar" onclick="editarPlano(${aluno.id_matricula}, ${aluno.id_plano})">Editar plano</button>
                     ` : ''}
-                    <button onclick="excluirAluno(${aluno.id_aluno})">Excluir</button>
+                    <button class="btn-excluir" onclick="excluirAluno(${aluno.id_aluno})">Excluir</button>
                 </td>
             </tr>
         `;
@@ -107,6 +128,9 @@ async function editarAluno(id) {
 
     const nome = prompt('Nome:', aluno.nome);
     if (nome === null) return;
+
+    const cpf = prompt('CPF:', aluno.cpf || '');
+    if (cpf === null) return;
 
     const telefone = prompt('Telefone:', aluno.telefone || '');
     if (telefone === null) return;
@@ -126,7 +150,7 @@ async function editarAluno(id) {
     const respostaEdicao = await fetch('/alunos/' + id, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, telefone, email, nascimento })
+        body: JSON.stringify({ nome, cpf, telefone, email, nascimento })
     });
 
     alert(await respostaEdicao.text());
@@ -213,7 +237,7 @@ async function mostrarPlanos(idAluno, nomeAluno) {
 
                 <p>${plano.descricao || ''}</p>
 
-                <button onclick="selecionarPlano(${plano.id_plano})">
+                <button class="btn-editar" onclick="selecionarPlano(${plano.id_plano})">
                     Selecionar plano
                 </button>
             </div>
@@ -300,8 +324,8 @@ async function carregarPlanos() {
                 <td>${plano.duracao_dias} dias</td>
                 <td>${plano.descricao || ''}</td>
                 <td>
-                    <button onclick="editarCadastroPlano(${plano.id_plano})">Editar</button>
-                    <button onclick="excluirPlano(${plano.id_plano})">Excluir</button>
+                    <button class="btn-editar" onclick="editarCadastroPlano(${plano.id_plano})">Editar</button>
+                    <button class="btn-excluir" onclick="excluirPlano(${plano.id_plano})">Excluir</button>
                 </td>
             </tr>
         `;
@@ -356,6 +380,7 @@ async function excluirPlano(id) {
 // Carregar alunos e planos
 carregarAlunos();
 carregarPlanos();
+
 // Listar matrículas
 async function carregarMatriculas() {
     const tabela = document.getElementById('tabela-matriculas');
@@ -367,48 +392,261 @@ async function carregarMatriculas() {
 
     tabela.innerHTML = '';
 
-    matriculas.forEach(function(matricula) {
-        const hoje = new Date();
-        hoje.setHours(0, 0, 0, 0);
+    if (matriculas.length === 0) {
+        tabela.innerHTML = `
+            <tr>
+                <td colspan="5">Nenhuma matrícula cadastrada.</td>
+            </tr>
+        `;
+        return;
+    }
 
-        const vencimento = new Date(matricula.data_fim);
-        vencimento.setHours(0, 0, 0, 0);
+    matriculas.forEach(function(matricula) {
+
+        const inicio = matricula.data_inicio
+            ? String(matricula.data_inicio).slice(0, 10).split('-').reverse().join('/')
+            : '';
+
+        const fim = matricula.data_fim
+            ? String(matricula.data_fim).slice(0, 10).split('-').reverse().join('/')
+            : '';
+
+        const hoje = new Date();
+        const dataHoje = hoje.getFullYear() + '-' +
+            String(hoje.getMonth() + 1).padStart(2, '0') + '-' +
+            String(hoje.getDate()).padStart(2, '0');
+
+        const dataVencimento = matricula.data_fim
+            ? String(matricula.data_fim).slice(0, 10)
+            : '';
 
         let situacao = 'Ativa';
 
-        if (vencimento < hoje) {
+        if (dataVencimento && dataVencimento < dataHoje) {
             situacao = 'Encerrada';
         }
 
         tabela.innerHTML += `
-            <tr>
+            <tr
+                data-cpf="${matricula.cpf || ''}"
+                data-telefone="${matricula.telefone || ''}"
+            >
                 <td>${matricula.nome}</td>
                 <td>${matricula.plano}</td>
-                <td>${new Date(matricula.data_fim).toLocaleDateString('pt-BR')}</td>
+                <td>${inicio}</td>
+                <td>${fim}</td>
                 <td>${situacao}</td>
             </tr>
         `;
     });
+
+    filtrarMatriculas();
 }
 
-// Pesquisar matrícula
-const pesquisaMatricula = document.getElementById('pesquisar-matricula');
+// Pesquisar matrícula por nome, CPF ou telefone
+function filtrarMatriculas() {
+    const pesquisa = document.getElementById('pesquisar-matricula');
 
-if (pesquisaMatricula) {
-    pesquisaMatricula.addEventListener('input', function() {
-        const pesquisa = this.value.toLowerCase();
-        const linhas = document.querySelectorAll('#tabela-matriculas tr');
+    if (!pesquisa) return;
 
-        linhas.forEach(function(linha) {
-            const nome = linha.cells[0].textContent.toLowerCase();
+    const texto = pesquisa.value.toLowerCase().trim();
+    const numerosPesquisa = texto.replace(/\D/g, '');
 
-            if (nome.includes(pesquisa)) {
-                linha.style.display = '';
-            } else {
-                linha.style.display = 'none';
-            }
-        });
+    const linhas = document.querySelectorAll('#tabela-matriculas tr');
+
+    linhas.forEach(function(linha) {
+        if (!linha.cells[0]) return;
+
+        const nome = linha.cells[0].textContent.toLowerCase();
+
+        const cpf = linha.dataset.cpf || '';
+        const cpfLimpo = cpf.replace(/\D/g, '');
+
+        const telefone = linha.dataset.telefone || '';
+        const telefoneLimpo = telefone.replace(/\D/g, '');
+
+        const encontrouNome = nome.includes(texto);
+
+        const encontrouCpf = numerosPesquisa !== '' &&
+            cpfLimpo.includes(numerosPesquisa);
+
+        const encontrouTelefone = numerosPesquisa !== '' &&
+            telefoneLimpo.includes(numerosPesquisa);
+
+        if (
+            texto === '' ||
+            encontrouNome ||
+            encontrouCpf ||
+            encontrouTelefone
+        ) {
+            linha.style.display = '';
+        } else {
+            linha.style.display = 'none';
+        }
     });
 }
 
+// Evento da pesquisa de matrículas
+const pesquisaMatricula = document.getElementById('pesquisar-matricula');
+
+if (pesquisaMatricula) {
+    pesquisaMatricula.addEventListener('input', filtrarMatriculas);
+}
+
 carregarMatriculas();
+
+// Listar pagamentos
+async function carregarPagamentos() {
+    const tabela = document.getElementById('lista-pagamentos');
+
+    if (!tabela) return;
+
+    try {
+        const resposta = await fetch('/pagamentos');
+        const pagamentos = await resposta.json();
+
+        tabela.innerHTML = '';
+
+        if (pagamentos.length === 0) {
+            tabela.innerHTML = `
+                <tr>
+                    <td colspan="7">Nenhum pagamento cadastrado.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        pagamentos.forEach(function(pagamento) {
+            const vencimento = pagamento.data_vencimento
+                ? String(pagamento.data_vencimento).slice(0, 10).split('-').reverse().join('/')
+                : '';
+
+            const dataPagamento = pagamento.data_pagamento
+                ? String(pagamento.data_pagamento).slice(0, 10).split('-').reverse().join('/')
+                : 'Não pago';
+
+            const hoje = new Date();
+            const dataHoje = hoje.getFullYear() + '-' +
+                String(hoje.getMonth() + 1).padStart(2, '0') + '-' +
+                String(hoje.getDate()).padStart(2, '0');
+
+            const dataVencimento = pagamento.data_vencimento
+                ? String(pagamento.data_vencimento).slice(0, 10)
+                : '';
+
+            let situacao = pagamento.status;
+
+            if (pagamento.status !== 'PAGO') {
+                if (dataVencimento && dataVencimento < dataHoje) {
+                    situacao = 'VENCIDO';
+                } else {
+                    situacao = 'PENDENTE';
+                }
+            }
+
+            let acao = 'Pago';
+
+            if (situacao === 'PENDENTE' || situacao === 'VENCIDO') {
+                acao = `
+                    <button class="btn-editar" onclick="registrarPagamento(${pagamento.id_pagamento})">
+                        Registrar pagamento
+                    </button>
+                `;
+            }
+
+            tabela.innerHTML += `
+                <tr
+                    data-cpf="${pagamento.cpf || ''}"
+                    data-telefone="${pagamento.telefone || ''}"
+                >
+                    <td>${pagamento.aluno}</td>
+                    <td>${pagamento.plano}</td>
+                    <td>R$ ${Number(pagamento.valor).toFixed(2).replace('.', ',')}</td>
+                    <td>${vencimento}</td>
+                    <td>${dataPagamento}</td>
+                    <td>${situacao}</td>
+                    <td>${acao}</td>
+                </tr>
+            `;
+        });
+
+        filtrarPagamentos();
+
+    } catch (erro) {
+        tabela.innerHTML = `
+            <tr>
+                <td colspan="7">Erro ao carregar pagamentos.</td>
+            </tr>
+        `;
+    }
+}
+
+// Pesquisar pagamento por nome, CPF ou telefone
+function filtrarPagamentos() {
+    const pesquisa = document.getElementById('pesquisar-pagamento');
+
+    if (!pesquisa) return;
+
+    const texto = pesquisa.value.toLowerCase().trim();
+    const numerosPesquisa = texto.replace(/\D/g, '');
+
+    const linhas = document.querySelectorAll('#lista-pagamentos tr');
+
+    linhas.forEach(function(linha) {
+        if (!linha.cells[0]) return;
+
+        const nome = linha.cells[0].textContent.toLowerCase();
+
+        const cpf = linha.dataset.cpf || '';
+        const cpfLimpo = cpf.replace(/\D/g, '');
+
+        const telefone = linha.dataset.telefone || '';
+        const telefoneLimpo = telefone.replace(/\D/g, '');
+
+        const encontrouNome = nome.includes(texto);
+
+        const encontrouCpf = numerosPesquisa !== '' &&
+            cpfLimpo.includes(numerosPesquisa);
+
+        const encontrouTelefone = numerosPesquisa !== '' &&
+            telefoneLimpo.includes(numerosPesquisa);
+
+        if (
+            texto === '' ||
+            encontrouNome ||
+            encontrouCpf ||
+            encontrouTelefone
+        ) {
+            linha.style.display = '';
+        } else {
+            linha.style.display = 'none';
+        }
+    });
+}
+
+// Evento da pesquisa de pagamentos
+const pesquisaPagamento = document.getElementById('pesquisar-pagamento');
+
+if (pesquisaPagamento) {
+    pesquisaPagamento.addEventListener('input', filtrarPagamentos);
+}
+
+// Registrar pagamento
+async function registrarPagamento(id) {
+    const confirmar = confirm('Deseja registrar este pagamento como pago?');
+
+    if (!confirmar) return;
+
+    const resposta = await fetch('/pagamentos/' + id, {
+        method: 'PUT'
+    });
+
+    const resultado = await resposta.text();
+
+    alert(resultado);
+
+    carregarPagamentos();
+}
+
+// Carregar pagamentos
+carregarPagamentos();

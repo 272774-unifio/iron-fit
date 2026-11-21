@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Fit - Pagamentos</title>
+    <link rel="stylesheet" href="alunos.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <aside class="menu">
+            <h1>IRON FIT</h1>
+
+            <nav>
+                <a href="alunos.html">Alunos</a>
+                <a href="planos.html">Planos</a>
+                <a href="matriculas.html">Matrículas</a>
+                <a href="pagamentos.html" class="ativo">Pagamentos</a>
+            </nav>
+        </aside>
+
+        <main class="conteudo">
+
+            <div class="topo">
+                <h2>Pagamentos</h2>
+            </div>
+
+          
+            <!-- Barra de pesquisa -->
+            <div class="campo-pesquisa">
+                <input
+                    type="text"
+                    id="pesquisar-pagamento"
+                    placeholder="Pesquisar aluno"
+                >
+            </div>
+
+            <div class="tabela">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aluno</th>
+                            <th>Plano</th>
+                            <th>Valor</th>
+                            <th>Vencimento</th>
+                            <th>Data do pagamento</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="lista-pagamentos">
+                        <tr>
+                            <td colspan="7">Carregando pagamentos...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
