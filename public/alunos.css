@@ -281,3 +281,130 @@ button.btn-excluir:hover {
 button.btn-excluir:active {
     transform: scale(0.97);
 } 
+
+
+/* Ajuste da tabela de alunos */
+.conteudo {
+    min-width: 0;
+}
+
+.tabela {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabela table {
+    min-width: 950px;
+    width: 100%;
+}
+
+.tabela th,
+.tabela td {
+    white-space: nowrap;
+    padding: 13px 15px;
+}
+
+.tabela td:last-child {
+    min-width: 270px;
+}
+
+/* Evita que os botões fiquem espremidos */
+.tabela td button {
+    margin: 3px;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 700px) {
+    .tabela table {
+        min-width: 900px;
+    }
+
+    .conteudo {
+        overflow-x: hidden;
+    }
+}
+
+
+/* Ajuste da tabela de alunos */
+.conteudo {
+    min-width: 0;
+}
+
+.tabela {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabela table {
+    min-width: 950px;
+    width: 100%;
+}
+
+.tabela th,
+.tabela td {
+    white-space: nowrap;
+    padding: 13px 15px;
+}
+
+.tabela td:last-child {
+    min-width: 270px;
+}
+
+/* Evita que os botões fiquem espremidos */
+.tabela td button {
+    margin: 3px;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 700px) {
+    .tabela table {
+        min-width: 900px;
+    }
+
+    .conteudo {
+        overflow-x: hidden;
+    }
+}
+
+
+/* Ajuste da tabela de alunos */
+.conteudo {
+    min-width: 0;
+}
+
+.tabela {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabela table {
+    min-width: 950px;
+    width: 100%;
+}
+
+.tabela th,
+.tabela td {
+    white-space: nowrap;
+    padding: 13px 15px;
+}
+
+.tabela td:last-child {
+    min-width: 270px;
+}
+
+/* Evita que os botões fiquem espremidos */
+.tabela td button {
+    margin: 3px;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 700px) {
+    .tabela table {
+        min-width: 900px;
+    }
+
+    .conteudo {
+        overflow-x: hidden;
+    }
+}
+
